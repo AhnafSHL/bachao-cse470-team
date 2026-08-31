@@ -11,6 +11,7 @@ export const createRequest = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('A valid need type is required');
   }
+
   if (!location || !Array.isArray(location.coords) || location.coords.length !== 2) {
     res.status(400);
     throw new Error('Please pin a location on the map');
@@ -49,25 +50,31 @@ export const createSOS = asyncHandler(async (req, res) => {
   res.status(201).json(request);
 });
 
-// Features 3 & 4: live requests for the map with filters.
+// Features 3 & 4 plus Sprint 2 lifecycle status filtering.
 export const getRequests = asyncHandler(async (req, res) => {
-  const { district, needType, urgency } = req.query;
-  const filter = { status: 'open' };
+  const { district, needType, urgency, status } = req.query;
+  const filter = {};
 
   if (district) filter['location.district'] = new RegExp(`^${district}$`, 'i');
   if (needType) filter.needType = needType;
   if (urgency) filter.urgency = urgency;
 
+  // Closed requests are hidden from the public active-request view by default.
+  if (status) filter.status = status;
+  else filter.status = { $in: ['open', 'claimed', 'fulfilled'] };
+
   const requests = await HelpRequest.find(filter)
     .populate('createdBy', 'name phone')
+    .populate('claimedBy', 'name phone')
     .sort({ urgency: -1, createdAt: -1 });
 
   res.json(requests);
 });
 
-// Feature 5: track your own requests.
+// Feature 5 plus Sprint 2 claimed-volunteer information.
 export const getMyRequests = asyncHandler(async (req, res) => {
   const requests = await HelpRequest.find({ createdBy: req.user._id })
+    .populate('claimedBy', 'name phone')
     .sort({ createdAt: -1 });
 
   res.json(requests);
@@ -76,7 +83,8 @@ export const getMyRequests = asyncHandler(async (req, res) => {
 // Public request detail.
 export const getRequestById = asyncHandler(async (req, res) => {
   const request = await HelpRequest.findById(req.params.id)
-    .populate('createdBy', 'name phone');
+    .populate('createdBy', 'name phone')
+    .populate('claimedBy', 'name phone');
 
   if (!request) {
     res.status(404);
