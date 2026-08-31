@@ -132,4 +132,11 @@ export const ratingApi = {
     ),
 };
 
+export const dashboardApi = {
+  heatmap: () =>
+    api.get(
+      '/dashboard/heatmap'
+    ),
+};
+
 export default api;

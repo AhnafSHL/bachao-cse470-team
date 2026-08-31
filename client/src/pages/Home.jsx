@@ -1,13 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import MapView from '../components/MapView.jsx';
-import { requestApi, volunteerApi } from '../services/api.js';
+import { requestApi, volunteerApi, dashboardApi } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NEED_TYPES, URGENCIES, DISTRICTS, DISTRICT_NAMES, NEED_COLORS, BD_CENTER } from '../constants.js';
 
 export default function Home() {
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
+  const [heat, setHeat] = useState([]);
+  const [showHeat, setShowHeat] = useState(false);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
   const [filters, setFilters] = useState({
@@ -34,6 +36,15 @@ export default function Home() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (showHeat) {
+      dashboardApi
+        .heatmap()
+        .then((res) => setHeat(res.data))
+        .catch((err) => setMsg(err.message));
+    }
+  }, [showHeat, requests]);
 
   const claim = async (id) => {
     try {
@@ -121,10 +132,37 @@ export default function Home() {
               <option value="fulfilled">Fulfilled</option>
             </select>
           </div>
+
+          <div style={{ alignSelf: 'flex-end' }}>
+            <label style={{ visibility: 'hidden' }}>Heatmap</label>
+
+            <label
+              className="row"
+              style={{
+                gap: 6,
+                margin: 0,
+                cursor: 'pointer',
+              }}
+            >
+              <input
+                type="checkbox"
+                style={{ width: 'auto' }}
+                checked={showHeat}
+                onChange={(e) => setShowHeat(e.target.checked)}
+              />
+
+              <span>Unmet-needs heatmap</span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <MapView points={points} center={center} zoom={filters.district ? 10 : 7} />
+      <MapView
+        points={showHeat ? [] : points}
+        heat={showHeat ? heat : null}
+        center={center}
+        zoom={filters.district ? 10 : 7}
+      />
 
       <h3 style={{ marginTop: 20 }}>
         {loading ? 'Loading…' : `${requests.length} active request${requests.length === 1 ? '' : 's'}`}
