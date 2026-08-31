@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import PostRequest from './pages/PostRequest.jsx';
 import MyRequests from './pages/MyRequests.jsx';
+import VolunteerDashboard from './pages/VolunteerDashboard.jsx';
 
 export default function App() {
   return (
@@ -18,6 +19,14 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/post" element={<ProtectedRoute><PostRequest /></ProtectedRoute>} />
         <Route path="/my-requests" element={<ProtectedRoute><MyRequests /></ProtectedRoute>} />
+        <Route
+          path="/volunteer"
+          element={
+            <ProtectedRoute roles={['volunteer', 'admin']}>
+              <VolunteerDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

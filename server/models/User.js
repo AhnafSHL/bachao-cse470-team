@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema(
       default: 'citizen',
     },
     location: { type: locationSchema, default: () => ({}) },
+
+    // Sprint 2: volunteer reputation from citizen ratings.
+    ratingAvg: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

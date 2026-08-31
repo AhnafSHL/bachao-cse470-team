@@ -1,6 +1,10 @@
 import { NEED_COLORS } from '../constants.js';
 
-export default function RequestCard({ request: r }) {
+export default function RequestCard({
+  request: r,
+  actions = null,
+  footer = null,
+}) {
   const color = NEED_COLORS[r.needType] || '#0d6efd';
 
   return (
@@ -24,6 +28,18 @@ export default function RequestCard({ request: r }) {
         {r.createdBy?.name && <>By {r.createdBy.name} · </>}
         {new Date(r.createdAt).toLocaleString()}
       </div>
+      {r.claimedBy && (
+        <div
+          className="muted"
+          style={{ fontSize: '0.82rem', marginTop: 4 }}
+        >
+          🙋 Claimed by <b>{r.claimedBy.name}</b>
+          {r.claimedBy.ratingAvg ? ` (★ ${r.claimedBy.ratingAvg})` : ''}
+        </div>
+      )}
+
+      {actions && <div style={{ marginTop: 12 }}>{actions}</div>}
+      {footer}
     </div>
   );
 }
