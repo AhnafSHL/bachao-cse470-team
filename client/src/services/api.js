@@ -31,4 +31,16 @@ export const requestApi = {
   sos: (data) => api.post('/requests/sos', data),
 };
 
+export const volunteerApi = {
+  claim: (id) => api.put(`/volunteer/requests/${id}/claim`),
+  setStatus: (id, status) =>
+    api.put(`/volunteer/requests/${id}/status`, { status }),
+  tasks: () => api.get('/volunteer/tasks'),
+  logDistribution: (data) =>
+    api.post('/volunteer/distributions', data),
+  distributions: (params) =>
+    api.get('/volunteer/distributions', { params }),
+};
+
+
 export default api;
