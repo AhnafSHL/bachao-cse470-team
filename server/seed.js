@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 
 import {
   connectDB,
@@ -205,6 +206,31 @@ const run = async () => {
     },
   ]);
 
+  /*
+   * Important for mongodb-memory-server with a persistent dbPath:
+   *
+   * The seed command starts its own MongoDB process and shuts it down
+   * immediately after inserting demo data. Force MongoDB to flush the
+   * completed writes to server/.mongo-data before shutting down.
+   *
+   * Without this checkpoint, a following `npm run dev` can occasionally
+   * reopen stale data, causing the seeded demo password to appear invalid.
+   */
+  try {
+    await mongoose.connection.db.admin().command({
+      fsync: 1,
+    });
+
+    console.log(
+      '💾 Seed data flushed to disk.'
+    );
+  } catch (err) {
+    console.warn(
+      '⚠️ MongoDB flush skipped:',
+      err.message
+    );
+  }
+
   console.log(
     '\n✅ Sprint 2 seed complete!'
   );
@@ -226,6 +252,8 @@ const run = async () => {
   );
 
   await disconnectDB();
+
+  process.exit(0);
 };
 
 run().catch(async (err) => {
@@ -234,7 +262,11 @@ run().catch(async (err) => {
     err
   );
 
-  await disconnectDB();
+  try {
+    await disconnectDB();
+  } catch {
+    // Ignore cleanup errors while handling the original seed failure.
+  }
 
   process.exit(1);
 });
