@@ -20,6 +20,7 @@ import volunteerRoutes from './routes/volunteerRoutes.js';
 import ratingRoutes from './routes/ratingRoutes.js';
 import campaignRoutes from './routes/campaignRoutes.js';
 import shelterRoutes from './routes/shelterRoutes.js';
+import missingPersonRoutes from './routes/missingPersonRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 
 const app = express();
@@ -80,6 +81,11 @@ app.use(
 app.use(
   '/api/shelters',
   shelterRoutes
+);
+
+app.use(
+  '/api/missing',
+  missingPersonRoutes
 );
 
 app.use(

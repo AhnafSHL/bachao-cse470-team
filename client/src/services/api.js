@@ -202,6 +202,25 @@ export const shelterApi = {
     ),
 };
 
+export const missingApi = {
+  list: (params) =>
+    api.get(
+      '/missing',
+      { params }
+    ),
+
+  create: (data) =>
+    api.post(
+      '/missing',
+      data
+    ),
+
+  markFound: (id) =>
+    api.put(
+      `/missing/${id}/found`
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(
