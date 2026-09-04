@@ -132,6 +132,53 @@ export const ratingApi = {
     ),
 };
 
+export const campaignApi = {
+  list: (params) =>
+    api.get(
+      '/campaigns',
+      { params }
+    ),
+
+  get: (id) =>
+    api.get(
+      `/campaigns/${id}`
+    ),
+
+  create: (data) =>
+    api.post(
+      '/campaigns',
+      data
+    ),
+
+  donate: (
+    id,
+    data
+  ) =>
+    api.post(
+      `/campaigns/${id}/donate`,
+      data
+    ),
+
+  donations: (id) =>
+    api.get(
+      `/campaigns/${id}/donations`
+    ),
+
+  distribute: (
+    id,
+    amount
+  ) =>
+    api.put(
+      `/campaigns/${id}/distribute`,
+      { amount }
+    ),
+
+  matches: (id) =>
+    api.get(
+      `/campaigns/${id}/matches`
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(

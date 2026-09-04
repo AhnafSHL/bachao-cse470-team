@@ -8,6 +8,8 @@ import Register from './pages/Register.jsx';
 import PostRequest from './pages/PostRequest.jsx';
 import MyRequests from './pages/MyRequests.jsx';
 import VolunteerDashboard from './pages/VolunteerDashboard.jsx';
+import Campaigns from './pages/Campaigns.jsx';
+import CampaignDetail from './pages/CampaignDetail.jsx';
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/campaigns" element={<Campaigns />} />
+        <Route path="/campaigns/:id" element={<CampaignDetail />} />
         <Route path="/post" element={<ProtectedRoute><PostRequest /></ProtectedRoute>} />
         <Route path="/my-requests" element={<ProtectedRoute><MyRequests /></ProtectedRoute>} />
         <Route

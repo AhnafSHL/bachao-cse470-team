@@ -6,6 +6,7 @@ import { DISTRICTS, DISTRICT_NAMES } from '../constants.js';
 const ROLES = [
   { value: 'citizen', label: 'Citizen (need help)' },
   { value: 'volunteer', label: 'Volunteer (give help)' },
+  { value: 'donor', label: 'Donor (fund relief)' },
 ];
 
 export default function Register() {
