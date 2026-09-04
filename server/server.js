@@ -18,6 +18,7 @@ import authRoutes from './routes/authRoutes.js';
 import helpRequestRoutes from './routes/helpRequestRoutes.js';
 import volunteerRoutes from './routes/volunteerRoutes.js';
 import ratingRoutes from './routes/ratingRoutes.js';
+import campaignRoutes from './routes/campaignRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 
 const app = express();
@@ -68,6 +69,11 @@ app.use(
 app.use(
   '/api/ratings',
   ratingRoutes
+);
+
+app.use(
+  '/api/campaigns',
+  campaignRoutes
 );
 
 app.use(

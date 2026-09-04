@@ -3,7 +3,7 @@ import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { generateToken } from '../utils/generateToken.js';
 
-const ROLES = ['citizen', 'volunteer', 'admin'];
+const ROLES = ['citizen', 'volunteer', 'donor', 'admin'];
 
 const publicUser = (u) => ({
   _id: u._id,
