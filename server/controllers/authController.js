@@ -3,7 +3,13 @@ import User from '../models/User.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { generateToken } from '../utils/generateToken.js';
 
-const ROLES = ['citizen', 'volunteer', 'donor', 'admin'];
+const ROLES = [
+  'citizen',
+  'volunteer',
+  'donor',
+  'org_admin',
+  'admin',
+];
 
 const publicUser = (u) => ({
   _id: u._id,
@@ -12,6 +18,8 @@ const publicUser = (u) => ({
   phone: u.phone,
   role: u.role,
   location: u.location,
+  organization: u.organization,
+  isVerified: u.isVerified,
 });
 
 // @route POST /api/auth/register

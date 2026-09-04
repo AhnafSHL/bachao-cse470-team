@@ -17,10 +17,20 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, default: '' },
     role: {
       type: String,
-      enum: ['citizen', 'volunteer', 'donor', 'admin'],
+      enum: ['citizen', 'volunteer', 'donor', 'org_admin', 'admin'],
       default: 'citizen',
     },
     location: { type: locationSchema, default: () => ({}) },
+
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organization',
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
 
     // Sprint 2: volunteer reputation from citizen ratings.
     ratingAvg: { type: Number, default: 0 },
