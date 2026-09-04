@@ -11,6 +11,10 @@ import User from './models/User.js';
 import HelpRequest from './models/HelpRequest.js';
 import DistributionLog from './models/DistributionLog.js';
 import Rating from './models/Rating.js';
+import Campaign from './models/Campaign.js';
+import Donation from './models/Donation.js';
+import Shelter from './models/Shelter.js';
+import MissingPerson from './models/MissingPerson.js';
 
 const PLACES = {
   Sylhet: [
@@ -44,6 +48,10 @@ const run = async () => {
   await Promise.all([
     Rating.deleteMany({}),
     DistributionLog.deleteMany({}),
+    Donation.deleteMany({}),
+    Campaign.deleteMany({}),
+    Shelter.deleteMany({}),
+    MissingPerson.deleteMany({}),
     HelpRequest.deleteMany({}),
     User.deleteMany({}),
   ]);
@@ -85,6 +93,7 @@ const run = async () => {
     citizen1,
     citizen2,
     volunteer1,
+    donor1,
   ] = await User.create([
     mk(
       'Admin',
@@ -112,6 +121,13 @@ const run = async () => {
       'hasan@example.com',
       'volunteer',
       'Sylhet'
+    ),
+
+    mk(
+      'Donor Tareq',
+      'tareq@example.com',
+      'donor',
+      'Dhaka'
     ),
   ]);
 
@@ -206,7 +222,234 @@ const run = async () => {
   ]);
 
   console.log(
-    '\n✅ Sprint 2 seed complete!'
+    'Creating Sprint 3 campaigns and donations...'
+  );
+
+  const campaign =
+    await Campaign.create({
+      title:
+        'Sylhet Flood Emergency Fund',
+
+      description:
+        'Food, clean water and medicine for families affected by the Sylhet floods.',
+
+      organizer:
+        donor1._id,
+
+      goalAmount:
+        200000,
+
+      raisedAmount:
+        65000,
+
+      distributedAmount:
+        20000,
+
+      type:
+        'money',
+
+      district:
+        'Sylhet',
+    });
+
+  await Donation.create([
+    {
+      campaign:
+        campaign._id,
+
+      donor:
+        donor1._id,
+
+      amount:
+        50000,
+    },
+
+    {
+      campaign:
+        campaign._id,
+
+      donor:
+        citizen2._id,
+
+      amount:
+        15000,
+    },
+  ]);
+
+  await Campaign.create({
+    title:
+      'Winter Blankets for Sunamganj',
+
+    description:
+      'A goods campaign for blankets and warm clothing.',
+
+    organizer:
+      donor1._id,
+
+    goalAmount:
+      1000,
+
+    type:
+      'goods',
+
+    district:
+      'Sunamganj',
+  });
+
+  console.log(
+    'Creating Sprint 3 shelters...'
+  );
+
+  await Shelter.create([
+    {
+      name:
+        'Sylhet Govt. Primary School Shelter',
+
+      location: {
+        district:
+          'Sylhet',
+
+        upazila:
+          'Sadar',
+
+        coords:
+          PLACES.Sylhet,
+      },
+
+      capacity:
+        200,
+
+      currentOccupancy:
+        140,
+
+      facilities: [
+        'water',
+        'medical',
+        'food',
+      ],
+
+      managedBy:
+        volunteer1._id,
+
+      contact:
+        '01711111111',
+    },
+
+    {
+      name:
+        'Sunamganj Community Center',
+
+      location: {
+        district:
+          'Sunamganj',
+
+        upazila:
+          'Sadar',
+
+        coords:
+          PLACES.Sunamganj,
+      },
+
+      capacity:
+        120,
+
+      currentOccupancy:
+        120,
+
+      facilities: [
+        'water',
+        'food',
+      ],
+
+      managedBy:
+        volunteer1._id,
+
+      contact:
+        '01722222222',
+    },
+  ]);
+
+  console.log(
+    'Creating Sprint 3 missing-person records...'
+  );
+
+  await MissingPerson.create([
+    {
+      name:
+        'Shuvo Mia',
+
+      age:
+        9,
+
+      lastSeenLocation: {
+        district:
+          'Sylhet',
+
+        upazila:
+          'Sadar',
+      },
+
+      description:
+        'Wearing a red t-shirt, separated from family during evacuation.',
+
+      contact:
+        '01733333333',
+
+      status:
+        'missing',
+
+      reportedBy:
+        citizen1._id,
+    },
+
+    {
+      name:
+        'Abdul Karim',
+
+      age:
+        67,
+
+      lastSeenLocation: {
+        district:
+          'Sunamganj',
+
+        upazila:
+          'Sadar',
+      },
+
+      description:
+        'Elderly person who was separated from family during evacuation.',
+
+      contact:
+        '01744444444',
+
+      status:
+        'found',
+
+      reportedBy:
+        citizen2._id,
+    },
+  ]);
+
+  const [
+    campaignCount,
+    donationCount,
+    shelterCount,
+    missingCount,
+  ] = await Promise.all([
+    Campaign.countDocuments(),
+    Donation.countDocuments(),
+    Shelter.countDocuments(),
+    MissingPerson.countDocuments(),
+  ]);
+
+  console.log(
+  `Sprint 3 demo data: ${campaignCount} campaigns, ${donationCount} donations, ${shelterCount} shelters, ${missingCount} missing-person records`
+  );
+
+
+  console.log(
+    '\n✅ Sprint 3 seed complete!'
   );
 
   console.log(
@@ -223,6 +466,10 @@ const run = async () => {
 
   console.log(
     '  hasan@example.com'
+  );
+
+  console.log(
+  '  tareq@example.com'
   );
 
   await disconnectDB();
