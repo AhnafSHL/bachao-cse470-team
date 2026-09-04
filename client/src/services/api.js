@@ -132,6 +132,95 @@ export const ratingApi = {
     ),
 };
 
+export const campaignApi = {
+  list: (params) =>
+    api.get(
+      '/campaigns',
+      { params }
+    ),
+
+  get: (id) =>
+    api.get(
+      `/campaigns/${id}`
+    ),
+
+  create: (data) =>
+    api.post(
+      '/campaigns',
+      data
+    ),
+
+  donate: (
+    id,
+    data
+  ) =>
+    api.post(
+      `/campaigns/${id}/donate`,
+      data
+    ),
+
+  donations: (id) =>
+    api.get(
+      `/campaigns/${id}/donations`
+    ),
+
+  distribute: (
+    id,
+    amount
+  ) =>
+    api.put(
+      `/campaigns/${id}/distribute`,
+      { amount }
+    ),
+
+  matches: (id) =>
+    api.get(
+      `/campaigns/${id}/matches`
+    ),
+};
+
+export const shelterApi = {
+  list: (params) =>
+    api.get(
+      '/shelters',
+      { params }
+    ),
+
+  create: (data) =>
+    api.post(
+      '/shelters',
+      data
+    ),
+
+  setOccupancy: (
+    id,
+    currentOccupancy
+  ) =>
+    api.put(
+      `/shelters/${id}/occupancy`,
+      { currentOccupancy }
+    ),
+};
+
+export const missingApi = {
+  list: (params) =>
+    api.get(
+      '/missing',
+      { params }
+    ),
+
+  create: (data) =>
+    api.post(
+      '/missing',
+      data
+    ),
+
+  markFound: (id) =>
+    api.put(
+      `/missing/${id}/found`
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(
