@@ -26,6 +26,7 @@ export default function Navbar() {
         <div className="nav-links">
           {link('/', 'Home', true)}
           {link('/campaigns', 'Campaigns')}
+          {link('/shelters', 'Shelters')}
           {user && link('/post', 'Post Request')}
           {user && link('/my-requests', 'My Requests')}
           {user?.role === 'volunteer' && link('/volunteer', 'Volunteer')}

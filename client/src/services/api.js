@@ -179,6 +179,29 @@ export const campaignApi = {
     ),
 };
 
+export const shelterApi = {
+  list: (params) =>
+    api.get(
+      '/shelters',
+      { params }
+    ),
+
+  create: (data) =>
+    api.post(
+      '/shelters',
+      data
+    ),
+
+  setOccupancy: (
+    id,
+    currentOccupancy
+  ) =>
+    api.put(
+      `/shelters/${id}/occupancy`,
+      { currentOccupancy }
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(
