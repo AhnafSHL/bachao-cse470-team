@@ -24,7 +24,7 @@ export default function Shelters() {
 
   const canManage =
     user &&
-    ['volunteer', 'admin'].includes(user.role);
+    ['org_admin', 'admin'].includes(user.role);
 
   const load = () =>
     shelterApi

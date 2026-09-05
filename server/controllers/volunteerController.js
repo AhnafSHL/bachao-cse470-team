@@ -1,6 +1,8 @@
 import HelpRequest from '../models/HelpRequest.js';
 import DistributionLog from '../models/DistributionLog.js';
+import InventoryItem from '../models/InventoryItem.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { notify } from '../utils/notify.js';
 
 // Feature 6: volunteer claims an open request.
 // Lifecycle: open -> claimed.
@@ -20,6 +22,13 @@ export const claimRequest = asyncHandler(async (req, res) => {
   request.status = 'claimed';
   request.claimedBy = req.user._id;
   await request.save();
+
+  await notify(
+    request.createdBy,
+    `${req.user.name} has claimed your ${request.needType} request and is on the way.`,
+    'status',
+    '/my-requests'
+  );
 
   const populated = await request.populate('claimedBy', 'name phone');
   res.json(populated);
@@ -63,12 +72,21 @@ export const updateStatus = asyncHandler(async (req, res) => {
   request.status = status;
   await request.save();
 
+  if (status === 'fulfilled') {
+    await notify(
+      request.createdBy,
+      `Your ${request.needType} request has been marked fulfilled. Please confirm and rate your volunteer.`,
+      'status',
+      '/my-requests'
+    );
+  }
+
   res.json(request);
 });
 
 // Feature 9: record relief distribution.
 export const logDistribution = asyncHandler(async (req, res) => {
-  const { request, itemsGiven, quantity, peopleHelped, area } = req.body;
+  const { request, itemsGiven, quantity, peopleHelped, area, campaign } = req.body;
 
   if (!itemsGiven) {
     res.status(400);
@@ -78,11 +96,36 @@ export const logDistribution = asyncHandler(async (req, res) => {
   const log = await DistributionLog.create({
     actor: req.user._id,
     request: request || undefined,
+    campaign: campaign || undefined,
     itemsGiven,
     quantity: quantity || 1,
     peopleHelped: peopleHelped || 0,
     area: area || req.user.location?.district || '',
   });
+
+  if (req.user.organization) {
+    const item =
+      await InventoryItem.findOne({
+        organization:
+          req.user.organization,
+
+        itemName: new RegExp(
+          `^${itemsGiven}$`,
+          'i'
+        ),
+      });
+
+    if (item) {
+      item.quantity =
+        Math.max(
+          0,
+          item.quantity -
+            (quantity || 1)
+        );
+
+      await item.save();
+    }
+  }
 
   res.status(201).json(log);
 });

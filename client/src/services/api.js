@@ -221,7 +221,133 @@ export const missingApi = {
     ),
 };
 
+export const orgApi = {
+  list: (params) =>
+    api.get(
+      '/orgs',
+      { params }
+    ),
+
+  get: (id) =>
+    api.get(
+      `/orgs/${id}`
+    ),
+
+  create: (data) =>
+    api.post(
+      '/orgs',
+      data
+    ),
+
+  inventory: (id) =>
+    api.get(
+      `/orgs/${id}/inventory`
+    ),
+
+  addItem: (id, data) =>
+    api.post(
+      `/orgs/${id}/inventory`,
+      data
+    ),
+
+  updateItem: (
+    itemId,
+    data
+  ) =>
+    api.put(
+      `/orgs/inventory/${itemId}`,
+      data
+    ),
+};
+
+export const reportApi = {
+  create: (data) =>
+    api.post(
+      '/reports',
+      data
+    ),
+
+  list: (params) =>
+    api.get(
+      '/reports',
+      { params }
+    ),
+
+  resolve: (
+    id,
+    action
+  ) =>
+    api.put(
+      `/reports/${id}`,
+      { action }
+    ),
+};
+
+export const adminApi = {
+  orgs: (params) =>
+    api.get(
+      '/admin/orgs',
+      { params }
+    ),
+
+  verifyOrg: (
+    id,
+    isVerified
+  ) =>
+    api.put(
+      `/admin/orgs/${id}/verify`,
+      { isVerified }
+    ),
+
+  users: (params) =>
+    api.get(
+      '/admin/users',
+      { params }
+    ),
+
+  verifyUser: (
+    id,
+    isVerified
+  ) =>
+    api.put(
+      `/admin/users/${id}/verify`,
+      { isVerified }
+    ),
+
+  requests: () =>
+    api.get(
+      '/admin/requests'
+    ),
+
+  removeRequest: (id) =>
+    api.delete(
+      `/admin/requests/${id}`
+    ),
+};
+
+export const notificationApi = {
+  list: () =>
+    api.get(
+      '/notifications'
+    ),
+
+  markRead: (id) =>
+    api.put(
+      `/notifications/${id}/read`
+    ),
+
+  markAllRead: () =>
+    api.put(
+      '/notifications/read-all'
+    ),
+};
+
 export const dashboardApi = {
+  impact: () =>
+    api.get(
+      '/dashboard/impact'
+    ),
+
   heatmap: () =>
     api.get(
       '/dashboard/heatmap'

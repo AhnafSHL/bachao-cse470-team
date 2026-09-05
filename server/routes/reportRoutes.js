@@ -1,10 +1,10 @@
 import express from 'express';
 
 import {
-  createShelter,
-  getShelters,
-  updateOccupancy,
-} from '../controllers/shelterController.js';
+  createReport,
+  getReports,
+  resolveReport,
+} from '../controllers/reportController.js';
 
 import {
   protect,
@@ -15,17 +15,21 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(getShelters)
+  .get(
+    protect,
+    authorize('admin'),
+    getReports
+  )
   .post(
     protect,
-    authorize('org_admin', 'admin'),
-    createShelter
+    createReport
   );
 
 router.put(
-  '/:id/occupancy',
+  '/:id',
   protect,
-  updateOccupancy
+  authorize('admin'),
+  resolveReport
 );
 
 export default router;
