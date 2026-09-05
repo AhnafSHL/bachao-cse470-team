@@ -1,6 +1,7 @@
 import HelpRequest from '../models/HelpRequest.js';
 import DistributionLog from '../models/DistributionLog.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { notify } from '../utils/notify.js';
 
 // Feature 6: volunteer claims an open request.
 // Lifecycle: open -> claimed.
@@ -20,6 +21,13 @@ export const claimRequest = asyncHandler(async (req, res) => {
   request.status = 'claimed';
   request.claimedBy = req.user._id;
   await request.save();
+
+  await notify(
+    request.createdBy,
+    `${req.user.name} has claimed your ${request.needType} request and is on the way.`,
+    'status',
+    '/my-requests'
+  );
 
   const populated = await request.populate('claimedBy', 'name phone');
   res.json(populated);
@@ -62,6 +70,15 @@ export const updateStatus = asyncHandler(async (req, res) => {
 
   request.status = status;
   await request.save();
+
+  if (status === 'fulfilled') {
+    await notify(
+      request.createdBy,
+      `Your ${request.needType} request has been marked fulfilled. Please confirm and rate your volunteer.`,
+      'status',
+      '/my-requests'
+    );
+  }
 
   res.json(request);
 });

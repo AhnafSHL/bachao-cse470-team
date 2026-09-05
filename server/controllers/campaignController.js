@@ -2,6 +2,7 @@ import Campaign from '../models/Campaign.js';
 import Donation from '../models/Donation.js';
 import HelpRequest from '../models/HelpRequest.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { notify } from '../utils/notify.js';
 
 // Sprint 3:
 // Rough BDT estimate used by the campaign-to-request
@@ -173,6 +174,17 @@ export const donate =
       numAmount;
 
     await campaign.save();
+
+    await notify(
+      campaign.organizer,
+      `${req.user.name} donated ${
+        numAmount
+          ? '৳' + numAmount
+          : itemDescription
+      } to "${campaign.title}".`,
+      'donation',
+      '/campaigns'
+    );
 
     res.status(201).json({
       donation,

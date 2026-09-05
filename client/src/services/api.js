@@ -260,6 +260,23 @@ export const orgApi = {
     ),
 };
 
+export const notificationApi = {
+  list: () =>
+    api.get(
+      '/notifications'
+    ),
+
+  markRead: (id) =>
+    api.put(
+      `/notifications/${id}/read`
+    ),
+
+  markAllRead: () =>
+    api.put(
+      '/notifications/read-all'
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(

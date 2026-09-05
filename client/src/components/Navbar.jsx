@@ -1,9 +1,46 @@
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { notificationApi } from '../services/api.js';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    if (!user) {
+      setUnread(0);
+      return;
+    }
+
+    let active = true;
+
+    const load = () =>
+      notificationApi
+        .list()
+        .then((res) => {
+          if (active) {
+            setUnread(
+              res.data.unread
+            );
+          }
+        })
+        .catch(() => {});
+
+    load();
+
+    const id =
+      setInterval(
+        load,
+        30000
+      );
+
+    return () => {
+      active = false;
+      clearInterval(id);
+    };
+  }, [user]);
 
   const onLogout = () => {
     logout();
@@ -37,6 +74,19 @@ export default function Navbar() {
         <div className="nav-right">
           {user ? (
             <>
+              <NavLink
+                to="/notifications"
+                className="nav-link"
+                title="Notifications"
+              >
+                🔔
+                {unread > 0 && (
+                  <span className="notif-dot">
+                    {unread}
+                  </span>
+                )}
+              </NavLink>
+
               <span className="muted nav-user">
                 {user.name.split(' ')[0]} · {user.role}
               </span>

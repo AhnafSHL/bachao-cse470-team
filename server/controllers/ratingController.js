@@ -5,6 +5,7 @@ import HelpRequest from '../models/HelpRequest.js';
 import User from '../models/User.js';
 
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { notify } from '../utils/notify.js';
 
 // Sprint 2 Feature 10:
 // Citizen confirms that help was received and rates the volunteer.
@@ -88,6 +89,13 @@ export const confirmAndRate = asyncHandler(async (req, res) => {
         aggregate[0].count,
     });
   }
+
+  await notify(
+    request.claimedBy,
+    `You received a ${numStars}★ rating for helping with a ${request.needType} request.`,
+    'status',
+    '/volunteer'
+  );
 
   res.status(201).json({
     rating,

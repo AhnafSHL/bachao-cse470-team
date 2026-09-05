@@ -13,6 +13,7 @@ import CampaignDetail from './pages/CampaignDetail.jsx';
 import Shelters from './pages/Shelters.jsx';
 import MissingPersons from './pages/MissingPersons.jsx';
 import Organizations from './pages/Organizations.jsx';
+import Notifications from './pages/Notifications.jsx';
 
 export default function App() {
   return (
@@ -29,6 +30,14 @@ export default function App() {
         <Route path="/organizations" element={<Organizations />} />
         <Route path="/post" element={<ProtectedRoute><PostRequest /></ProtectedRoute>} />
         <Route path="/my-requests" element={<ProtectedRoute><MyRequests /></ProtectedRoute>} />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/volunteer"
           element={
