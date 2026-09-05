@@ -24,6 +24,7 @@ router
     protect,
     authorize(
       'donor',
+      'org_admin',
       'admin'
     ),
     createCampaign

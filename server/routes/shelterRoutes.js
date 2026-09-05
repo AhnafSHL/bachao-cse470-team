@@ -18,7 +18,7 @@ router
   .get(getShelters)
   .post(
     protect,
-    authorize('volunteer', 'admin'),
+    authorize('org_admin', 'admin'),
     createShelter
   );
 

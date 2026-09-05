@@ -7,6 +7,7 @@ const ROLES = [
   { value: 'citizen', label: 'Citizen (need help)' },
   { value: 'volunteer', label: 'Volunteer (give help)' },
   { value: 'donor', label: 'Donor (fund relief)' },
+  { value: 'org_admin', label: 'NGO / Organization' },
 ];
 
 export default function Register() {

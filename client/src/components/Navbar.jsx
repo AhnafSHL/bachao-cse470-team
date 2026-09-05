@@ -28,6 +28,7 @@ export default function Navbar() {
           {link('/campaigns', 'Campaigns')}
           {link('/shelters', 'Shelters')}
           {link('/missing', 'Missing Persons')}
+          {link('/organizations', 'Organizations')}
           {user && link('/post', 'Post Request')}
           {user && link('/my-requests', 'My Requests')}
           {user?.role === 'volunteer' && link('/volunteer', 'Volunteer')}

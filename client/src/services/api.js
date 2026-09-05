@@ -221,6 +221,45 @@ export const missingApi = {
     ),
 };
 
+export const orgApi = {
+  list: (params) =>
+    api.get(
+      '/orgs',
+      { params }
+    ),
+
+  get: (id) =>
+    api.get(
+      `/orgs/${id}`
+    ),
+
+  create: (data) =>
+    api.post(
+      '/orgs',
+      data
+    ),
+
+  inventory: (id) =>
+    api.get(
+      `/orgs/${id}/inventory`
+    ),
+
+  addItem: (id, data) =>
+    api.post(
+      `/orgs/${id}/inventory`,
+      data
+    ),
+
+  updateItem: (
+    itemId,
+    data
+  ) =>
+    api.put(
+      `/orgs/inventory/${itemId}`,
+      data
+    ),
+};
+
 export const dashboardApi = {
   heatmap: () =>
     api.get(

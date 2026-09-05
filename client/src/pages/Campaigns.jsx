@@ -54,7 +54,7 @@ export default function Campaigns() {
 
   const canCreate =
     user &&
-    ['donor', 'admin'].includes(
+    ['donor', 'org_admin', 'admin'].includes(
       user.role
     );
 
