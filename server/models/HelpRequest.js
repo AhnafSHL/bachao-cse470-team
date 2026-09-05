@@ -10,7 +10,7 @@ const helpRequestSchema = new mongoose.Schema(
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     needType: {
       type: String,
-      enum: ['food', 'water', 'medicine', 'rescue', 'shelter'],
+      enum: ['food', 'water', 'medicine', 'rescue', 'shelter', 'resource'],
       required: true,
     },
     description: { type: String, default: '' },
@@ -24,6 +24,10 @@ const helpRequestSchema = new mongoose.Schema(
     },
     claimedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     confirmedByCitizen: { type: Boolean, default: false },
+    isResourceNeed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

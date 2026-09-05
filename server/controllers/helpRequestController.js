@@ -7,6 +7,7 @@ const NEED_TYPES = [
   'medicine',
   'rescue',
   'shelter',
+  'resource',
 ];
 
 // Feature 1: post a help request.
@@ -17,6 +18,7 @@ export const createRequest = asyncHandler(async (req, res) => {
     peopleAffected,
     location,
     urgency,
+    isResourceNeed,
   } = req.body;
 
   if (!NEED_TYPES.includes(needType)) {
@@ -42,6 +44,7 @@ export const createRequest = asyncHandler(async (req, res) => {
     urgency: ['normal', 'high', 'sos'].includes(urgency)
       ? urgency
       : 'normal',
+    isResourceNeed: !!isResourceNeed,
   });
 
   res.status(201).json(request);
@@ -94,6 +97,7 @@ export const getRequests = asyncHandler(async (req, res) => {
     needType,
     urgency,
     status,
+    resourceOnly,
   } = req.query;
 
   const filter = {};
@@ -121,6 +125,10 @@ export const getRequests = asyncHandler(async (req, res) => {
         'fulfilled',
       ],
     };
+  }
+
+  if (resourceOnly === 'true') {
+    filter.isResourceNeed = true;
   }
 
   const requests = await HelpRequest.find(filter)

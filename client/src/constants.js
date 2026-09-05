@@ -1,6 +1,6 @@
 // Shared option lists used by Sprint 1 request forms and filters.
 
-export const NEED_TYPES = ['food', 'water', 'medicine', 'rescue', 'shelter'];
+export const NEED_TYPES = ['food', 'water', 'medicine', 'rescue', 'shelter', 'resource'];
 export const URGENCIES = ['normal', 'high', 'sos'];
 export const STATUSES = ['open'];
 
@@ -26,4 +26,5 @@ export const NEED_COLORS = {
   medicine: '#d63384',
   rescue: '#dc3545',
   shelter: '#6610f2',
+  resource: '#198754',
 };

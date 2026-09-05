@@ -343,6 +343,11 @@ export const notificationApi = {
 };
 
 export const dashboardApi = {
+  impact: () =>
+    api.get(
+      '/dashboard/impact'
+    ),
+
   heatmap: () =>
     api.get(
       '/dashboard/heatmap'

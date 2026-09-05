@@ -13,6 +13,8 @@ import CampaignDetail from './pages/CampaignDetail.jsx';
 import Shelters from './pages/Shelters.jsx';
 import MissingPersons from './pages/MissingPersons.jsx';
 import Organizations from './pages/Organizations.jsx';
+import ResourceBoard from './pages/ResourceBoard.jsx';
+import ImpactDashboard from './pages/ImpactDashboard.jsx';
 import Notifications from './pages/Notifications.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 
@@ -29,6 +31,15 @@ export default function App() {
         <Route path="/shelters" element={<Shelters />} />
         <Route path="/missing" element={<MissingPersons />} />
         <Route path="/organizations" element={<Organizations />} />
+        <Route
+          path="/resources"
+          element={<ResourceBoard />}
+        />
+
+        <Route
+          path="/impact"
+          element={<ImpactDashboard />}
+        />
         <Route path="/post" element={<ProtectedRoute><PostRequest /></ProtectedRoute>} />
         <Route path="/my-requests" element={<ProtectedRoute><MyRequests /></ProtectedRoute>} />
         <Route

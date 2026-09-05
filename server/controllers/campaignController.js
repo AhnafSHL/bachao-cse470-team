@@ -13,6 +13,7 @@ const COST_PER_PERSON = {
   medicine: 500,
   rescue: 1000,
   shelter: 800,
+  resource: 1500,
 };
 
 // Sprint 3 Feature:

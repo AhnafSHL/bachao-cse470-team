@@ -36,7 +36,7 @@ router
   .get(protect, getDistributions)
   .post(
     protect,
-    authorize('volunteer', 'admin'),
+    authorize('volunteer', 'org_admin', 'admin'),
     logDistribution
   );
 

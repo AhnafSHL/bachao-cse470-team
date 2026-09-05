@@ -4,6 +4,7 @@ const distributionLogSchema = new mongoose.Schema(
   {
     actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     request: { type: mongoose.Schema.Types.ObjectId, ref: 'HelpRequest' },
+    campaign: { type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' },
     itemsGiven: { type: String, required: true },
     quantity: { type: Number, default: 1 },
     peopleHelped: { type: Number, default: 0 },
