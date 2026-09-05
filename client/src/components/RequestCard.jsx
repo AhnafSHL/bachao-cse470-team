@@ -1,23 +1,23 @@
+import { useLang } from '../context/LangContext.jsx';
 import { NEED_COLORS } from '../constants.js';
 
-export default function RequestCard({
-  request: r,
-  actions = null,
-  footer = null,
-}) {
+// Renders one help request as a card. `actions` is an optional node rendered
+// at the bottom (claim buttons, status controls, etc.).
+export default function RequestCard({ request: r, actions = null, footer = null }) {
+  const { t } = useLang();
   const color = NEED_COLORS[r.needType] || '#0d6efd';
 
   return (
     <div className="card">
       <div className="spread">
         <span style={{ fontWeight: 700, textTransform: 'capitalize', color }}>
-          {r.needType}
+          {t(r.needType)} {r.isResourceNeed ? '🛟' : ''}
         </span>
-        <span className={`badge badge-${r.status}`}>{r.status}</span>
+        <span className={`badge badge-${r.status}`}>{t(r.status)}</span>
       </div>
 
       <div className="row" style={{ margin: '8px 0', gap: 6 }}>
-        <span className={`badge badge-${r.urgency}`}>{r.urgency === 'sos' ? 'SOS' : r.urgency}</span>
+        <span className={`badge badge-${r.urgency}`}>{r.urgency === 'sos' ? 'SOS' : t(r.urgency)}</span>
         <span className="muted">👥 {r.peopleAffected}</span>
         <span className="muted">📍 {r.location?.district || '—'}{r.location?.upazila ? `, ${r.location.upazila}` : ''}</span>
       </div>
@@ -28,11 +28,9 @@ export default function RequestCard({
         {r.createdBy?.name && <>By {r.createdBy.name} · </>}
         {new Date(r.createdAt).toLocaleString()}
       </div>
+
       {r.claimedBy && (
-        <div
-          className="muted"
-          style={{ fontSize: '0.82rem', marginTop: 4 }}
-        >
+        <div className="muted" style={{ fontSize: '0.82rem', marginTop: 4 }}>
           🙋 Claimed by <b>{r.claimedBy.name}</b>
           {r.claimedBy.ratingAvg ? ` (★ ${r.claimedBy.ratingAvg})` : ''}
         </div>
