@@ -69,6 +69,7 @@ export default function Navbar() {
           {user && link('/post', 'Post Request')}
           {user && link('/my-requests', 'My Requests')}
           {user?.role === 'volunteer' && link('/volunteer', 'Volunteer')}
+          {user?.role === 'admin' && link('/admin', 'Admin')}
         </div>
 
         <div className="nav-right">

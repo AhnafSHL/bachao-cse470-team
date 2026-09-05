@@ -14,6 +14,7 @@ import Shelters from './pages/Shelters.jsx';
 import MissingPersons from './pages/MissingPersons.jsx';
 import Organizations from './pages/Organizations.jsx';
 import Notifications from './pages/Notifications.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
 
 export default function App() {
   return (
@@ -46,6 +47,17 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute
+              roles={['admin']}
+            >
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

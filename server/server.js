@@ -22,6 +22,8 @@ import campaignRoutes from './routes/campaignRoutes.js';
 import shelterRoutes from './routes/shelterRoutes.js';
 import missingPersonRoutes from './routes/missingPersonRoutes.js';
 import orgRoutes from './routes/orgRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 
@@ -93,6 +95,16 @@ app.use(
 app.use(
   '/api/orgs',
   orgRoutes
+);
+
+app.use(
+  '/api/reports',
+  reportRoutes
+);
+
+app.use(
+  '/api/admin',
+  adminRoutes
 );
 
 app.use(

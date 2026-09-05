@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import MapView from '../components/MapView.jsx';
-import { requestApi, volunteerApi, dashboardApi } from '../services/api.js';
+import { requestApi, volunteerApi, dashboardApi, reportApi } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NEED_TYPES, URGENCIES, DISTRICTS, DISTRICT_NAMES, NEED_COLORS, BD_CENTER } from '../constants.js';
 
@@ -51,6 +51,31 @@ export default function Home() {
       await volunteerApi.claim(id);
       setMsg('Request claimed — check your Volunteer dashboard.');
       load();
+    } catch (err) {
+      setMsg(err.message);
+    }
+  };
+
+  const report = async (id) => {
+    const reason = window.prompt(
+      'Why are you flagging this request? (e.g. fake / duplicate)'
+    );
+
+    if (!reason) {
+      return;
+    }
+
+    try {
+      await reportApi.create({
+        targetType:
+          'HelpRequest',
+        targetId: id,
+        reason,
+      });
+
+      setMsg(
+        'Reported. An admin will review it.'
+      );
     } catch (err) {
       setMsg(err.message);
     }
@@ -197,6 +222,16 @@ export default function Home() {
                 style={{ marginTop: 8 }}
               >
                 Claim
+              </button>
+            )}
+            {user && (
+              <button
+                className="btn btn-sm btn-ghost"
+                onClick={() =>
+                  report(r._id)
+                }
+              >
+                🚩 Flag
               </button>
             )}
           </div>

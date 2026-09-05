@@ -260,6 +260,71 @@ export const orgApi = {
     ),
 };
 
+export const reportApi = {
+  create: (data) =>
+    api.post(
+      '/reports',
+      data
+    ),
+
+  list: (params) =>
+    api.get(
+      '/reports',
+      { params }
+    ),
+
+  resolve: (
+    id,
+    action
+  ) =>
+    api.put(
+      `/reports/${id}`,
+      { action }
+    ),
+};
+
+export const adminApi = {
+  orgs: (params) =>
+    api.get(
+      '/admin/orgs',
+      { params }
+    ),
+
+  verifyOrg: (
+    id,
+    isVerified
+  ) =>
+    api.put(
+      `/admin/orgs/${id}/verify`,
+      { isVerified }
+    ),
+
+  users: (params) =>
+    api.get(
+      '/admin/users',
+      { params }
+    ),
+
+  verifyUser: (
+    id,
+    isVerified
+  ) =>
+    api.put(
+      `/admin/users/${id}/verify`,
+      { isVerified }
+    ),
+
+  requests: () =>
+    api.get(
+      '/admin/requests'
+    ),
+
+  removeRequest: (id) =>
+    api.delete(
+      `/admin/requests/${id}`
+    ),
+};
+
 export const notificationApi = {
   list: () =>
     api.get(
